@@ -1,13 +1,38 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="/src/style.css" rel="stylesheet">
-    </head>
-    <body>
-        <h1 class="text-3xl font-bold underline">
-            Hello world!
-        </h1>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title> {% block title %}{% endblock %}</title>
+    <!-- <link href="/src/style.css" rel="stylesheet"> -->
+</head>
+
+<body class="flex flex-col h-screen justify-between">
+    <header class="h-10">
+        <nav class="py-4 bg-teal-500 flex text-white lg:gap-x-5 justify-center">
+            <div class="flex lg:flex-1 m-auto">
+                <a href="/" class="text-white px-6">Freelance CRM</a>
+            </div>
+            <div class="text-white m-auto flex lg:gap-x-5">
+                <a href="{% url 'about' %}" class="text-sm/6 font-semibold">About</a>
+                <a href="#" class="text-sm/6 font-semibold">Marketplace</a>
+                <a href="#" class="text-sm/6 font-semibold">Company</a>
+            </div>
+            <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 pr-5">
+                <a href="/" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Log in </a>
+                <a href="/" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Sign up </a>
+            </div>
+        </nav>
+    </header>
+    <main class="h-10">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer class="h-10 py-8 text-center bg-teal-500">
+        <p class="text-white text-sm/2">Copyright (c) 2025 - Freelance CRM</p>
+    </footer>
+</body>
+
 </html>
