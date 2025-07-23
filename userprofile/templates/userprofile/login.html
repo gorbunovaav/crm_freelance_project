@@ -5,8 +5,7 @@ Log in
 {% endblock %}
 
 {% block content %}
-    Log in
-    <h1 class="text-xl font-semibold">Sign up</h1>
+    <h1 class="text-xl font-semibold">Log in</h1>
     <form method="post" action=".">
         {% csrf_token %} 
         {{form.as_p}}

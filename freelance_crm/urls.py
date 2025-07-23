@@ -28,5 +28,6 @@ urlpatterns = [
     path("log-in/", views.LoginView.as_view(template_name="userprofile/login.html"), name="login"),
     path("log-out/", views.LogoutView.as_view(), name="logout"),
     path("admin/", admin.site.urls),
-    path("dashboard/", include('dashboard.urls'))
+    path("dashboard/", include('dashboard.urls')),
+    path("dashboard/leads/", include('lead.urls')),
 ]
