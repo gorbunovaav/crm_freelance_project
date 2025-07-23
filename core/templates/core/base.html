@@ -36,6 +36,13 @@
             </div>
         </nav>
     </header>
+    {% if messages %}
+        <div class="py-6">
+            {% for message in messages %}
+                <div  class="py-2 px-2 bg-green-300 rounded-xl box-border"> {{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <main class="">
         {% block content %}
         {% endblock %}

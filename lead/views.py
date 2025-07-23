@@ -1,7 +1,9 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import AddLeadForm
 from .models import Lead
+
 
 @login_required
 def add_lead(request):
@@ -11,13 +13,35 @@ def add_lead(request):
             lead = form.save(commit=False)
             lead.created_by = request.user
             lead.save()
-            return redirect('dashboard')
+            messages.info(request, "The lead was created")
+            return redirect('leads_list')
     else:
         form = AddLeadForm()
     return render(request,'lead/add_lead.html', {
         'form': form 
     })
 
+@login_required
+def delete_lead(request, pk):
+    lead = get_object_or_404(Lead, created_by=request.user, pk=pk)
+    lead.delete()
+    messages.info(request, "The lead was deleted")
+    return redirect('leads_list')
+
+@login_required
+def edit_lead(request, pk):
+    lead = get_object_or_404(Lead, created_by=request.user, pk=pk)
+    if request.method == 'POST':
+        form = AddLeadForm(request.POST, instance=lead)
+        if form.is_valid():
+            form.save()
+            messages.info(request, "The changes were saved")
+            return redirect('leads_list')
+    else:
+        form = AddLeadForm(instance=lead)
+    return render(request,'lead/edit_lead.html', {
+        'form': form 
+    })
 @login_required
 def leads_list(request):
     leads = Lead.objects.filter(created_by=request.user)
