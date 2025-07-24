@@ -1,0 +1,23 @@
+{%extends 'core/base.html'%}
+
+{% block title %}
+My account
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-xl font-semibold">My account</h1>
+    <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+        {% csrf_token %}
+    </form>
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-sm/6 font-semibold bg-red-600 py-2 px-3 mt-5 rounded-xl text-white">Log out </a>
+    <p class="mt-2">
+        <strong>Username</strong>: {{request.user.username}}
+    </p>
+    <p class="mt-2 flex items-center">
+        <strong>Team:</strong> {{team.name}}
+        {% if team.created_by == request.user%}
+            <a class="ml-2 text-sm font-semibold bg-teal-600 py-2 px-2 rounded-xl text-white" href="{% url 'edit_team' team.id%}">Edit</a>
+        {% endif %}
+        </p>
+
+{% endblock %}

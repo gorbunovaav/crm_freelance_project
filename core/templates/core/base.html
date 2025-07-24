@@ -27,6 +27,7 @@
                     <a href="{% url 'clients_list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Clients</a>
 
                     {% csrf_token %}
+                    <a href="{% url 'myaccount' %}" class="text-sm/6 font-semibold bg-teal-800 py-2 px-3 rounded-xl">My account </a>
                     <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
                         {% csrf_token %}
                     </form>
