@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import AddLeadForm
 from .models import Lead
+from client.models import Client
 
 
 @login_required
@@ -42,9 +43,10 @@ def edit_lead(request, pk):
     return render(request,'lead/edit_lead.html', {
         'form': form 
     })
+    
 @login_required
 def leads_list(request):
-    leads = Lead.objects.filter(created_by=request.user)
+    leads = Lead.objects.filter(created_by=request.user, converted_to_client=False)
     return render(request,'lead/leads_list.html', {
         'leads': leads
     })
@@ -55,3 +57,18 @@ def lead_detail(request, pk):
     return render(request,'lead/lead_detail.html', {
         'lead': lead
     })
+    
+@login_required
+def convert_to_client(request, pk):
+    lead = get_object_or_404(Lead, created_by=request.user, pk=pk)
+    client = Client.objects.create(
+        name=lead.name,
+        email=lead.email,
+        phone=lead.phone,
+        description=lead.description,
+        created_by=request.user
+        )
+    lead.converted_to_client = True
+    lead.save()
+    messages.info(request, "The lead was converted to a client")
+    return redirect('leads_list')

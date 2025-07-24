@@ -35,6 +35,7 @@ class Lead(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     priority = models.CharField(max_length = 10, choices=CHOICES_PRIORITY, default=MEDIUM)
+    converted_to_client = models.BooleanField(default=False)
     
     def __str__(self):
         return self.name
