@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
-
+from team.models import Team
 
 class Lead(models.Model):
     LOW = 'low'
@@ -27,6 +27,7 @@ class Lead(models.Model):
     )
     
     name = models.CharField(max_length = 255)
+    team = models.ForeignKey(Team, related_name = 'leads', on_delete=models.CASCADE)
     email = models.EmailField()
     description = models.TextField(blank = True, null = True)
     phone =  models.CharField(max_length=12)
@@ -37,6 +38,9 @@ class Lead(models.Model):
     priority = models.CharField(max_length = 10, choices=CHOICES_PRIORITY, default=MEDIUM)
     converted_to_client = models.BooleanField(default=False)
     
+    class Meta:
+        ordering = ('name', )
+        
     def __str__(self):
         return self.name
     

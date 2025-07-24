@@ -5,5 +5,31 @@ Dashboard
 {% endblock %}
 
 {% block content %}
+<div class="py-6 px-6">
     <h1 class="text-xl font-semibold">Dashboard</h1>
+    <div class="flex">
+        <div class="w-1/2 bg-sky-100 px-4 py-4 leads">
+            <h2 class="text-lg">New leads</h2>
+            {% for lead in leads %}
+                <div class="bg-sky-100 lead">
+                    <div class="flex">
+                        <h3 class="font-semibold"> {{lead.name}}</h3>
+                        <a class="ml-2" href="{% url 'lead_detail' lead.id%}">Details</a>
+                    </div>
+                    <p class="text-xs">Status: {{lead.get_status_display}}</p>
+                    <p class="text-xs">Priority: {{lead.get_priority_display}}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="w-1/2 bg-sky-100 px-4 py-4 ml-4 clients">
+            <h2 class="text-lg">New clients</h2>
+            {% for client in clients %}
+                <div class="flex bg-sky-100 client">
+                    <h3 class="font-semibold"> {{client.name}}</h3>
+                    <a class="ml-2" href="{% url 'client_detail' client.id%}">Details</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

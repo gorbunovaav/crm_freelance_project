@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import AddLeadForm
 from .models import Lead
 from client.models import Client
+from team.models import Team
 
 
 @login_required
@@ -12,7 +13,9 @@ def add_lead(request):
         form = AddLeadForm(request.POST)
         if form.is_valid():
             lead = form.save(commit=False)
+            team = Team.objects.filter(created_by=request.user)[0]
             lead.created_by = request.user
+            lead.team = team
             lead.save()
             messages.info(request, "The lead was created")
             return redirect('leads_list')
@@ -61,8 +64,10 @@ def lead_detail(request, pk):
 @login_required
 def convert_to_client(request, pk):
     lead = get_object_or_404(Lead, created_by=request.user, pk=pk)
+    team = Team.objects.filter(created_by=request.user)[0]
     client = Client.objects.create(
         name=lead.name,
+        team=team,
         email=lead.email,
         phone=lead.phone,
         description=lead.description,
