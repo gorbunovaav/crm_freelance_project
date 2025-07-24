@@ -7,6 +7,7 @@ from .forms import AddClientForm
 
 @login_required
 def add_client(request):
+    team = Team.objects.filter(created_by=request.user)[0]
     if request.method == 'POST':
         form = AddClientForm(request.POST)
         if form.is_valid():
@@ -20,7 +21,8 @@ def add_client(request):
     else:
         form = AddClientForm()
     return render(request,'client/add_client.html', {
-        'form': form 
+        'form': form,
+        'team': team,
     })
     
 @login_required

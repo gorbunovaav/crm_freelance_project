@@ -7,11 +7,17 @@ Add lead
 {% block content %}
     <div class="py-6 px-6">
         <h1 class="text-xl font-semibold">Add lead</h1>
-        <form method="post" action=".">
-            {% csrf_token %}
+        {% if team.plan.max_leads > team.leads.all|length %}
+            <form method="post" action=".">
+                {% csrf_token %}
 
-            {{form.as_p}}
-            <button class="py-2 px-4 bg-teal-500 rounded-xl text-white">Submit</button>
-        </form>
+                {{form.as_p}}
+                <button class="py-2 px-4 bg-teal-500 rounded-xl text-white">Submit</button>
+            </form>
+        {% else %}
+        <div class="px-6 py-4 bg-red-400 text-white">
+            <p>Your team has reached maximum number of leads! Your owner must upgrade your plan!</p>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}

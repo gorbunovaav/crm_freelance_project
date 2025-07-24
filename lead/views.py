@@ -9,6 +9,7 @@ from team.models import Team
 
 @login_required
 def add_lead(request):
+    team = Team.objects.filter(created_by=request.user)[0]
     if request.method == 'POST':
         form = AddLeadForm(request.POST)
         if form.is_valid():
@@ -22,7 +23,8 @@ def add_lead(request):
     else:
         form = AddLeadForm()
     return render(request,'lead/add_lead.html', {
-        'form': form 
+        'form': form,
+        'team': team,
     })
 
 @login_required
@@ -44,7 +46,7 @@ def edit_lead(request, pk):
     else:
         form = AddLeadForm(instance=lead)
     return render(request,'lead/edit_lead.html', {
-        'form': form 
+        'form': form
     })
     
 @login_required
