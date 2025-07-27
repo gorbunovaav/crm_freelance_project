@@ -16,7 +16,7 @@ My account
     <p class="mt-2 flex items-center">
         <strong>Team:</strong> {{team.name}}
         {% if team.created_by == request.user%}
-            <a class="ml-2 text-sm font-semibold bg-teal-600 py-2 px-2 rounded-xl text-white" href="{% url 'edit_team' team.id%}">Edit</a>
+            <a class="ml-2 text-sm font-semibold bg-teal-600 py-2 px-2 rounded-xl text-white" href="{% url 'team:edit' team.id%}">Edit</a>
         {% endif %}
         </p>
 

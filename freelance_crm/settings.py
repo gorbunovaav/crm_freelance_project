@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'index'
+TAILWIND_APP_NAME = 'theme'
 
 
 # Application definition
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     'lead',
     'client',
     'team',
+    'tailwind',
+    'theme',
 ]
 
 MIDDLEWARE = [

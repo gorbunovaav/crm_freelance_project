@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <link href="style.css" rel="stylesheet"> -->
+
     <title> {% block title %}{% endblock %}</title>
     <!-- <link href="/src/style.css" rel="stylesheet"> -->
 </head>
@@ -22,19 +24,19 @@
             </div>
             <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 pr-5">
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'dashboard' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Dashboard </a>
-                    <a href="{% url 'leads_list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Leads</a>
-                    <a href="{% url 'clients_list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Clients</a>
+                    <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Dashboard </a>
+                    <a href="{% url 'leads:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Leads</a>
+                    <a href="{% url 'clients:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Clients</a>
 
                     {% csrf_token %}
-                    <a href="{% url 'myaccount' %}" class="text-sm/6 font-semibold bg-teal-800 py-2 px-3 rounded-xl">My account </a>
+                    <a href="{% url 'userprofile:myaccount' %}" class="text-sm/6 font-semibold bg-teal-800 py-2 px-3 rounded-xl">My account </a>
                     <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
                         {% csrf_token %}
                     </form>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-sm/6 font-semibold bg-red-600 py-2 px-3 rounded-xl">Log out </a>
                 {% else %}
                     <a href="{% url 'login' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Log in </a>
-                    <a href="{% url 'signup' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Sign up </a>
+                    <a href="{% url 'userprofile:signup' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Sign up </a>
                 {% endif %}
             </div>
         </nav>

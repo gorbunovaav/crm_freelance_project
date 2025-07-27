@@ -18,11 +18,11 @@
         <p class="font-semibold">Modified at</p>
         <p class="mb-2">{{client.modified_at|date:"M-d-Y H:i"}}</p>
         <div class="flex mb-3">
-            <a href="{% url 'delete_client' client.id %}" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete</a>
-            <a href="{% url 'edit_client' client.id %}" class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
+            <a href="{% url 'clients:delete' client.id %}" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete</a>
+            <a href="{% url 'clients:edit' client.id %}" class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
         </div>
-        <a href="{% url 'clients_list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to clients</a>
-        <a href="{% url 'dashboard' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to dashboard</a>
+        <a href="{% url 'clients:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to clients</a>
+        <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to dashboard</a>
 
 
     </div>

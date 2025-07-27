@@ -12,7 +12,7 @@ def edit_team(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "The changes were save!")
-            return redirect('myaccount')
+            return redirect('userprofile:myaccount')
     else:
         form = TeamForm(instance=team)
     return render(request, 'team/edit_team.html',{

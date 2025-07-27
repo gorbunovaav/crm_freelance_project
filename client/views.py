@@ -17,7 +17,7 @@ def add_client(request):
             client.team = team
             client.save()
             messages.info(request, "The client was created")
-            return redirect('clients_list')
+            return redirect('clients:list')
     else:
         form = AddClientForm()
     return render(request,'client/add_client.html', {
@@ -44,7 +44,7 @@ def delete_client(request, pk):
     client = get_object_or_404(Client, created_by=request.user, pk=pk)
     client.delete()
     messages.info(request, "The client was deleted")
-    return redirect('clients_list')
+    return redirect('clients:list')
 
 @login_required
 def edit_client(request, pk):
@@ -54,7 +54,7 @@ def edit_client(request, pk):
         if form.is_valid():
             form.save()
             messages.info(request, "The changes were saved")
-            return redirect('clients_list')
+            return redirect('clients:list')
     else:
         form = AddClientForm(instance=client)
     return render(request,'client/edit_client.html', {
