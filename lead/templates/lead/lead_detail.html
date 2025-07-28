@@ -24,7 +24,12 @@
         <p class="mb-2">{{lead.modified_at|date:"M-d-Y H:i"}}</p>
         <div class="flex mb-3">
             <a href="{% url 'leads:convert' lead.id %}" class="text-sm/6 font-semibold bg-blue-600 py-1 px-2 rounded-xl text-white">Convert to client</a>
-            <a href="{% url 'leads:delete' lead.id %}" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete</a>
+            <form id="lead_delete_form" method="post "action="{% url 'leads:delete' lead.id %}">
+                {% csrf_token %}
+            </form>
+            <a href="#" onclick="document.getElementById('lead_delete_form').submit();" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete </a>
+
+            <!-- <a href="{% url 'leads:delete' lead.id %}" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete</a> -->
             <a href="{% url 'leads:edit' lead.id %}" class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
         </div>
         <a href="{% url 'leads:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to leads</a>

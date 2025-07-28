@@ -48,8 +48,6 @@ INSTALLED_APPS = [
     'lead',
     'client',
     'team',
-    'tailwind',
-    'theme',
 ]
 
 MIDDLEWARE = [

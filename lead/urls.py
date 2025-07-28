@@ -5,10 +5,10 @@ from . import views
 app_name='leads'
 
 urlpatterns = [
-    path("add-lead/", views.add_lead, name="add_lead"),
-    path("<int:pk>/delete/", views.delete_lead, name="delete"),
-    path("<int:pk>/edit/", views.edit_lead, name="edit"),
-    path("<int:pk>/convert/", views.convert_to_client, name="convert"),
-    path("", views.leads_list, name="list"),
-    path("<int:pk>/", views.lead_detail, name="detail"),
+    path("add-lead/", views.LeadCreateView.as_view(), name="add"),
+    path("<int:pk>/delete/", views.LeadDeleteView.as_view(), name="delete"),
+    path("<int:pk>/edit/", views.LeadUpdateView.as_view(), name="edit"),
+    path("<int:pk>/convert/",views.ConvertToClientView.as_view(), name="convert"),
+    path("", views.LeadListView.as_view(), name="list"),
+    path("<int:pk>/", views.LeadDetailView.as_view(), name="detail"),
 ]
