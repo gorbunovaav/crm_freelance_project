@@ -24,6 +24,23 @@
         <a href="{% url 'clients:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to clients</a>
         <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to dashboard</a>
 
+        <h2 class="text-xl">Comments</h2>
+        <div class="space-y-4">
+            {% for comment in client.comments.all %}
+            <div class="bg-gray-100 py-6">
+                <p><strong> {{ comment.created_by}} </strong> {{ comment.created_at}} </p>
+                <p>{{ comment.content}}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+        <h2 class="text-xl">Add comment</h2>
+        <form method="post" action="{% url 'clients:add_comment' client.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>
+        </form>
+
 
     </div>
 {% endblock %}
