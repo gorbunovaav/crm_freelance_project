@@ -7,6 +7,8 @@ Clients
 {% block content %}
     <div class="py-6 px-6">
         <h1 class="mb-4 text-xl font-semibold">Clients</h1>
+        <a href="{% url 'clients:export' %}"
+            class="text-sm/6 font-semibold bg-green-600 py-1 px-2 rounded-xl border-1 ml-2 border-black text-white">Export clients</a>
         <a href="{% url 'clients:add' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">+ Add client </a>
         {% if clients%}
         <div class="mt-6 flex justify-between">
