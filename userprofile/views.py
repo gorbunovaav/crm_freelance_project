@@ -1,13 +1,13 @@
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Userprofile
+from .forms import SignupForm
 from team.models import Team
 
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
             Userprofile.objects.create(user=user)
@@ -15,7 +15,7 @@ def signup(request):
             team.members.add(request.user)
             team.save()
             return redirect('/log-in/')
-    form = UserCreationForm()
+    form = SignupForm()
     return render(request, 'userprofile/signup.html',{
         'form': form 
     })

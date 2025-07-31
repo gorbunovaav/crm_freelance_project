@@ -1,0 +1,34 @@
+<header class="h-10">
+    <nav class="py-4 bg-teal-500 flex text-white lg:gap-x-5 justify-center">
+        <div class="flex lg:flex-1 m-auto">
+            <a href="/" class="text-white px-6">Freelance CRM</a>
+        </div>
+        <div class="text-white m-auto flex lg:gap-x-5">
+            <a href="{% url 'about' %}" class="text-sm/6 font-semibold">About</a>
+            <a href="#" class="text-sm/6 font-semibold">Anything</a>
+            <a href="#" class="text-sm/6 font-semibold">Company</a>
+        </div>
+        <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 pr-5 flex items-baseline">
+            {% if request.user.is_authenticated %}
+            <div>
+                <p>Your team:</p>
+                <a href="{% url 'team:detail' active_team.id%}" class="text-white">{{active_team.name}}</a>
+            </div>
+                
+                <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Dashboard </a>
+                <a href="{% url 'leads:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Leads</a>
+                <a href="{% url 'clients:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Clients</a>
+
+                {% csrf_token %}
+                <a href="{% url 'userprofile:myaccount' %}" class="text-sm/6 font-semibold bg-teal-800 py-2 px-3 rounded-xl">My account </a>
+                <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-sm/6 font-semibold bg-red-600 py-2 px-3 rounded-xl">Log out </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Log in </a>
+                <a href="{% url 'userprofile:signup' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Sign up </a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
