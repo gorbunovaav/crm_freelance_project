@@ -22,8 +22,13 @@
                 <a href="#" class="text-sm/6 font-semibold">Anything</a>
                 <a href="#" class="text-sm/6 font-semibold">Company</a>
             </div>
-            <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 pr-5">
+            <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 pr-5 flex items-baseline">
                 {% if request.user.is_authenticated %}
+                <div>
+                    <p>Your team:</p>
+                    <a href="#" class="text-white">{{team.name}}</a>
+                </div>
+                    
                     <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Dashboard </a>
                     <a href="{% url 'leads:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Leads</a>
                     <a href="{% url 'clients:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Clients</a>

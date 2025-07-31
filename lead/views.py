@@ -1,7 +1,6 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import View
 from .models import Lead
@@ -11,24 +10,16 @@ from team.models import Team
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 
 
-class LeadListView(ListView):
+class LeadListView(ListView, LoginRequiredMixin):
     model = Lead
-    
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
     
     def get_queryset(self):
         queryset = super(LeadListView, self).get_queryset()
         return queryset.filter(created_by=self.request.user, converted_to_client=False)
         
 
-class LeadDetailView(DetailView):
+class LeadDetailView(DetailView, LoginRequiredMixin):
     model = Lead
-    
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,14 +32,10 @@ class LeadDetailView(DetailView):
         queryset = super(LeadDetailView, self).get_queryset()
         return queryset.filter(created_by=self.request.user, pk=self.kwargs.get('pk'))
     
-class LeadDeleteView(DeleteView):
+class LeadDeleteView(DeleteView, LoginRequiredMixin):
     model = Lead
     success_url = reverse_lazy('leads:list')
-    
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-    
+
     def get_queryset(self):
         queryset = super(LeadDeleteView, self).get_queryset()
         return queryset.filter(created_by=self.request.user, pk=self.kwargs.get('pk'))
@@ -56,14 +43,10 @@ class LeadDeleteView(DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
-class LeadUpdateView(UpdateView):
+class LeadUpdateView(UpdateView, LoginRequiredMixin):
     model = Lead
     fields = ("name", "email", "phone", "description", 'priority', 'status')
     success_url = reverse_lazy('leads:list')
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,14 +57,10 @@ class LeadUpdateView(UpdateView):
         queryset = super(LeadUpdateView, self).get_queryset()
         return queryset.filter(created_by=self.request.user, pk=self.kwargs.get('pk'))
     
-class LeadCreateView(CreateView):
+class LeadCreateView(CreateView, LoginRequiredMixin):
     model = Lead
     fields = ("name", "email", "phone", "description", 'priority', 'status')
     success_url = reverse_lazy('leads:list')
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
