@@ -26,7 +26,7 @@
                 {% if request.user.is_authenticated %}
                 <div>
                     <p>Your team:</p>
-                    <a href="#" class="text-white">{{team.name}}</a>
+                    <a href="{% url 'team:detail' active_team.id%}" class="text-white">{{active_team.name}}</a>
                 </div>
                     
                     <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Dashboard </a>

@@ -1,0 +1,21 @@
+{%extends 'core/base.html'%}
+
+{% block title %}
+{{team.name}}
+{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="text-xl font-semibold">{{team.name}}</h1>
+        {% if team.created_by == request.user%}
+            <a class="ml-2 text-sm font-semibold bg-teal-600 py-2 px-2 rounded-xl text-white" href="{% url 'team:edit' team.id%}">Edit</a>
+        {% endif %}
+        <p> <strong>Team owner: </strong>{{team.created_by}}</p>
+        <!-- <p> <strong>Created at: </strong>{{team.created_at}}</p> -->
+        <p> <strong>Plan: </strong>{{team.plan}}</p>
+        <p><strong>Team members</strong></p>
+        {% for member in team.members.all%}
+            <p>{{member.username}}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
