@@ -16,7 +16,7 @@ class Team(models.Model):
     members = models.ManyToManyField(User, related_name='teams')
     created_by = models.ForeignKey(User, related_name="created_teams", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    plan = models.ForeignKey(Plan, related_name="teams", on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan, related_name="teams", blank=True, null=True, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name

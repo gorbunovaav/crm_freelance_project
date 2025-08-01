@@ -64,16 +64,14 @@ class LeadCreateView(CreateView, LoginRequiredMixin):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        team = Team.objects.filter(created_by=self.request.user)[0]
-        context["team"] = team
+        context["team"] = self.request.user.userprofile.active_team
         context["title"] = 'Add lead'
         return context
     
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.created_by = self.request.user
-        team = Team.objects.filter(created_by=self.request.user)[0]
-        self.object.team = team
+        self.object.team = self.request.user.userprofile.active_team
         self.object.save()
 
         return super().form_valid(form)
@@ -83,9 +81,8 @@ class AddFileView(View):
         pk = kwargs.get('pk')
         form = AddFileForm(request.POST, request.FILES)
         if form.is_valid():
-            team = Team.objects.filter(created_by=self.request.user)[0]
             file = form.save(commit=False)
-            file.team = team
+            file.team = self.request.user.userprofile.active_team
             file.created_by = request.user
             file.lead_id = pk
             file.save()
@@ -96,9 +93,8 @@ class AddCommentView(View):
         pk = self.kwargs.get('pk')
         form = AddCommentForm(request.POST)
         if form.is_valid():
-            team = Team.objects.filter(created_by=self.request.user)[0]
             comment = form.save(commit=False)
-            comment.team = team
+            comment.team = self.request.user.userprofile.active_team
             comment.created_by = request.user
             comment.lead_id = pk
             comment.save()
@@ -110,10 +106,9 @@ class ConvertToClientView(View):
     def get(self, request, *args, **kwargs):
         pk = self.kwargs.get('pk')
         lead = get_object_or_404(Lead, created_by=request.user, pk=pk)
-        team = Team.objects.filter(created_by=self.request.user)[0]
         client = Client.objects.create(
             name=lead.name,
-            team=team,
+            team=self.request.user.userprofile.active_team,
             email=lead.email,
             phone=lead.phone,
             description=lead.description,
@@ -127,7 +122,7 @@ class ConvertToClientView(View):
                 client = client,
                 content = comment.content,
                 created_by = comment.created_by,
-                team = team
+                team = self.request.user.userprofile.active_team
             )
         messages.info(request, "The lead was converted to a client")
         return redirect('leads:list')

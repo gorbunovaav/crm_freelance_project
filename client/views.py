@@ -24,12 +24,11 @@ def clients_export(request):
 
 @login_required
 def add_client(request):
-    team = Team.objects.filter(created_by=request.user)[0]
     if request.method == 'POST':
         form = AddClientForm(request.POST)
         if form.is_valid():
             client = form.save(commit=False)
-            team = Team.objects.filter(created_by=request.user)[0]
+            team = request.user.userprofile.active_team
             client.created_by = request.user
             client.team = team
             client.save()
@@ -52,12 +51,11 @@ def clients_list(request):
 @login_required
 def clients_add_file(request, pk):
     client = get_object_or_404(Client, created_by=request.user, pk=pk)
-    team = Team.objects.filter(created_by=request.user)[0]
     if request.method == 'POST':
         form = AddFileForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.save(commit=False)
-            file.team = team
+            file.team = request.user.userprofile.active_team
             file.created_by = request.user
             file.client_id = pk
             file.save()
@@ -70,9 +68,8 @@ def client_detail(request, pk):
     if request.method == 'POST':
         form = AddCommentForm(request.POST)
         if form.is_valid():
-            team = Team.objects.filter(created_by=request.user)[0]
             comment = form.save(commit=False)
-            comment.team = team
+            comment.team = request.user.userprofile.active_team
             comment.created_by = request.user
             comment.client = client
             comment.save()

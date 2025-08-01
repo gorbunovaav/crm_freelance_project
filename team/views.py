@@ -5,8 +5,24 @@ from .models import Team
 from .forms import TeamForm
 
 @login_required
+def teams_list(request):
+    teams = Team.objects.filter(members__in=[request.user])
+    return render(request, 'team/teams_list.html',{
+        'teams': teams,
+    })
+
+@login_required
+def activate_team(request, pk):
+    team = Team.objects.filter(members__in=[request.user]).get(pk=pk)
+    userprofile = request.user.userprofile
+    userprofile.active_team = team
+    userprofile.save()
+    return redirect('team:detail', pk=pk)
+
+
+@login_required
 def detail_team(request, pk):
-    team = get_object_or_404(Team, created_by=request.user, pk=pk)
+    team = get_object_or_404(Team, members__in=[request.user], pk=pk)
     return render(request, 'team/detail_team.html',{
         'team': team,
     })
