@@ -13,6 +13,7 @@ class Client(models.Model):
     created_by = models.ForeignKey(User, related_name='clients', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     
     class Meta:
         ordering = ('name', )
