@@ -1,36 +1,63 @@
-<header class="h-10">
-    <nav class="py-4 bg-teal-500 flex text-white lg:gap-x-5 justify-center">
-        <div class="flex lg:flex-1 m-auto">
-            <a href="/" class="text-white px-6">Freelance CRM</a>
-        </div>
-        <div class="text-white m-auto flex lg:gap-x-5">
-            <a href="{% url 'about' %}" class="text-sm/6 font-semibold">About</a>
-            <a href="#" class="text-sm/6 font-semibold">Anything</a>
-            <a href="#" class="text-sm/6 font-semibold">Company</a>
-        </div>
-        <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 pr-5 flex items-baseline">
-            {% if request.user.is_authenticated %}
-            <div>
-                <p>Your team:</p>
-                <a href="{% url 'team:detail' active_team.id%}" class="text-white">{{active_team.name}}</a>
-            </div>
-                
-                <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Dashboard </a>
-                <a href="{% url 'leads:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Leads</a>
-                <a href="{% url 'clients:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Clients</a>
-
-                {% csrf_token %}
-                <a href="{% url 'userprofile:myaccount' %}" class="text-sm/6 font-semibold bg-teal-800 py-2 px-3 rounded-xl">My account </a>
-                <a href="{% url 'projects:list' %}" class="text-sm/6 font-semibold bg-teal-800 py-2 px-3 rounded-xl">My projects </a>
-
-                <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
-                    {% csrf_token %}
-                </form>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-sm/6 font-semibold bg-red-600 py-2 px-3 rounded-xl">Log out </a>
-            {% else %}
-                <a href="{% url 'login' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Log in </a>
-                <a href="{% url 'userprofile:signup' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl">Sign up </a>
-            {% endif %}
+{% load static %}
+<header class="mb-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+        <a href="/" class="img_logo" class="navbar-brand">
+            <img class="img_logo" src="{% static 'core/images/logo_black.png'%}" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Anything</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Company</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto d-flex align-items-center gap-2">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="navbar-text small">Your team:
+                        <a href="{% url 'team:detail' active_team.id %}" class="text-decoration-none fw-bold">
+                            {{ active_team.name }}</a>
+                    </span>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                      {{ request.user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                      <li><a class="dropdown-item" href="{% url 'userprofile:myaccount' %}">My account</a></li>
+                      <li><a class="dropdown-item" href="{% url 'projects:list' %}">My projects</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                      <li><a class="dropdown-item" href="{% url 'leads:list' %}">Leads</a></li>
+                      <li><a class="dropdown-item" href="{% url 'clients:list' %}">Clients</a></li>
+                    </ul>
+                  </li>
+      
+                <li class="nav-item">
+                    <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        class="btn btn-danger btn-sm">Log out</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="btn btn-outline-success btn-sm">Log in</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'userprofile:signup' %}" class="btn btn-success btn-sm">Sign up</a>
+                </li>
+                {% endif %}
+            </ul>
         </div>
     </nav>
 </header>

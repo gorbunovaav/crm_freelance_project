@@ -1,0 +1,58 @@
+body {
+  background-color: #e9f5ff; /* очень светлый голубой фон */
+  color: #003366; /* тёмно-синий текст */
+}
+
+.navbar-light {
+  background-color: #cce5ff !important;
+}
+
+.navbar-brand,
+.nav-link,
+.navbar-text {
+  color: #004080 !important;
+}
+
+.nav-link:hover {
+  color: #0066cc !important;
+}
+
+.btn-primary {
+  background-color: #3399ff;
+  border-color: #3399ff;
+}
+
+.btn-outline-success {
+  color: #3399ff;
+  border-color: #3399ff;
+}
+
+.btn-outline-success:hover {
+  background-color: #3399ff;
+  color: white;
+}
+
+.btn-success {
+  background-color: #66ccff;
+  border-color: #66ccff;
+}
+
+a {
+  color: #007bff;
+}
+
+a:hover {
+  color: #0056b3;
+}
+
+.img_logo{
+  width: 200px !important;
+  /* height: 200px !important; */
+}
+
+/* img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+} */
+
