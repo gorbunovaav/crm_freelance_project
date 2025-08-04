@@ -22,42 +22,26 @@
 
 
         <p class="font-semibold">Start date</p>
-        <p class="mb-2">{{project.start_date|date:"M-d-Y H:i"}}</p>
+        <p class="mb-2">{{project.start_date|date:"M-d-Y"}}</p>
 
         <p class="font-semibold">End date</p>
-        <p class="mb-2">{{project.end_date|date:"M-d-Y H:i"}}</p>
+        <p class="mb-2">{{project.end_date|date:"M-d-Y"}}</p>
 
         <p class="font-semibold">Budget</p>
         <p class="mb-2">{{project.budget}}</p>
 
         <div class="flex mb-3">
-            <form id="lead_delete_form" method="post "action="{% url 'projects:delete' project.id %}">
+            <form id="project_delete_form" method="post "action="{% url 'projects:delete' project.id %}">
                 {% csrf_token %}
             </form>
             <a href="#" onclick="document.getElementById('project_delete_form').submit();" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete </a>
 
-            <a href="{% url 'projects:edit' lead.id %}" class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
+            <a href="{% url 'projects:edit' project.id %}" class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
         </div>
-        <a href="{% url 'projects:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to leads</a>
-        <h2 class="text-xl">Comments</h2>
-        <div class="space-y-4">
-            {% for comment in project.comments.all %}
-            <div class="bg-gray-100 py-6">
-                <p><strong> {{ comment.created_by}} </strong> {{ comment.created_at}} </p>
-                <p>{{ comment.content}}</p>
-            </div>
-            {% endfor %}
-
-        </div>
-        <h2 class="text-xl">Add comment</h2>
-        <form method="post" action="{% url 'projects:add_comment' project.id %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>
-        </form>
+        <a href="{% url 'projects:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to projects</a>
         <h2 class="text-xl">Files</h2>
         <div class="space-y-4">
-            {% for file in lead.files.all %}
+            {% for file in project.files.all %}
             <div class="bg-gray-100 py-6">
                 <p><strong> {{ file.created_by}} </strong> {{ file.created_at}} </p>
                 <a href="{{ file.file.url }}">Download</a>
@@ -67,7 +51,7 @@
         </div>
 
         <h2 class="text-xl">Add file</h2>
-        <form method="post" action="{% url 'leads:add_file' lead.id %}" enctype="multipart/form-data">
+        <form method="post" action="{% url 'projects:add_file' project.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ fileform.as_p }}
             <button class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>

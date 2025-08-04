@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import View
 from .models import Project
-from .forms import AddProjectForm, AddFileForm, AddCommentForm
+from .forms import AddProjectForm, AddFileForm
 from client.models import Client, Comment as ClientComment
 from userprofile.models import Userprofile
 from team.models import Team
@@ -15,13 +15,8 @@ class ProjectListView(ListView, LoginRequiredMixin):
     model = Project
     
     def get_queryset(self):
-        user = self.request.user
-        try:
-            client = user.userprofile.client
-        except Userprofile.DoesNotExist:
-            # Пользователь без профиля — вернуть пустой queryset или как-то иначе обработать
-            return Project.objects.none()
-        return Project.objects.filter(client=client)
+        queryset = super(ProjectListView, self).get_queryset()
+        return queryset.filter(client__created_by=self.request.user)
         
 
 class ProjectDetailView(DetailView, LoginRequiredMixin):
@@ -35,7 +30,7 @@ class ProjectDetailView(DetailView, LoginRequiredMixin):
 
     def get_queryset(self):
         queryset = super(ProjectDetailView, self).get_queryset()
-        return queryset.filter(client__user=self.request.user, pk=self.kwargs.get('pk'))
+        return queryset.filter(client__created_by=self.request.user, pk=self.kwargs.get('pk'))
     
 class ProjectDeleteView(DeleteView, LoginRequiredMixin):
     model = Project
@@ -43,14 +38,14 @@ class ProjectDeleteView(DeleteView, LoginRequiredMixin):
 
     def get_queryset(self):
         queryset = super(ProjectDeleteView, self).get_queryset()
-        return queryset.filter(created_by=self.request.user, pk=self.kwargs.get('pk'))
+        return queryset.filter(client__created_by=self.request.user, pk=self.kwargs.get('pk'))
     
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
 class ProjectUpdateView(UpdateView, LoginRequiredMixin):
     model = Project
-    fields = ('name', 'description', 'budget', 'status', 'start date', 'end date')
+    fields = ('name', 'description', 'budget', 'status', 'start_date', 'end_date')
     success_url = reverse_lazy('projects:list')
     
     def get_context_data(self, **kwargs):
@@ -60,22 +55,19 @@ class ProjectUpdateView(UpdateView, LoginRequiredMixin):
     
     def get_queryset(self):
         queryset = super(ProjectUpdateView, self).get_queryset()
-        return queryset.filter(created_by=self.request.user, pk=self.kwargs.get('pk'))
+        return queryset.filter(client__created_by=self.request.user, pk=self.kwargs.get('pk'))
     
 class ProjectCreateView(CreateView, LoginRequiredMixin):
     model = Project
-    fields = ('name', 'description', 'budget', 'status', 'start_date', 'end_date')
+    form_class = AddProjectForm
+    # fields = ('name', 'description', 'budget', 'status', 'start_date', 'end_date')
     success_url = reverse_lazy('projects:list')
     
     def form_valid(self, form):
-        # Получаем Client, связанный с текущим пользователем
         try:
-            client = self.request.user.userprofile.client
-        except Userprofile.DoesNotExist:
-            form.add_error(None, "Userprofile does not exist.")
-            return self.form_invalid(form)
+            client = Client.objects.filter(created_by=self.request.user).first()
         except Client.DoesNotExist:
-            form.add_error(None, "Client does not exist.")
+            form.add_error(None, "Client does not exist for this user.")
             return self.form_invalid(form)
 
         form.instance.client = client
@@ -99,18 +91,4 @@ class AddFileView(View):
             file.project_id = pk
             file.save()
         return redirect('projects:detail', pk=pk)
-
-class AddCommentView(View):    
-    def post(self, request, *args, **kwargs):
-        pk = self.kwargs.get('pk')
-        form = AddCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.team = self.request.user.userprofile.active_team
-            comment.created_by = request.user
-            comment.project_id = pk
-            comment.save()
-            
-        return redirect('projects:detail', pk=pk)
-            
 

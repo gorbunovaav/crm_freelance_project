@@ -20,7 +20,7 @@ My projects
                         <a href="{% url 'projects:detail' project.id %}">{{project.name}}</a></p>
                     <p class="text-center py-4 px-2 w-full {% cycle '' 'bg-gray-100' %}">{{project.get_status_display}}</p>
                 </div>
-        {% endfor %}
+            {% endfor %}
         {% else %}
             <p class="px-2 mt-6">You don't have any projects yet...</p>
         {% endif %}
