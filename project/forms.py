@@ -10,12 +10,22 @@ class AddProjectForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
             'end_date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
         }
+        labels = {
+            'name': 'Название',
+            'description': 'Описание',
+            'budget': 'Бюджет',
+            'status': 'Статус',
+            'team': 'Команда',
+            'start_date': 'Старт проекта',
+            'end_date': 'Дедлайн проекта',
+        }
+        
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in ['start_date', 'end_date']:
             self.fields[field].input_formats = ['%Y-%m-%d']
-
-
+            self.field.widget.attrs["class"] = "form-control form-control-sm"
+            
 class AddFileForm(forms.ModelForm):
     class Meta:
         model = ProjectFile

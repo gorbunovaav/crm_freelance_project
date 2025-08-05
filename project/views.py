@@ -51,7 +51,7 @@ class ProjectUpdateView(UpdateView, LoginRequiredMixin):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Edit project'
+        context["title"] = 'Редактировать проект'
         return context
     
     def get_queryset(self):
@@ -67,7 +67,7 @@ class ProjectCreateView(CreateView, LoginRequiredMixin):
         try:
             client = Client.objects.filter(created_by=self.request.user).first()
         except Client.DoesNotExist:
-            form.add_error(None, "Client does not exist for this user.")
+            form.add_error(None, "Для данного пользователя нет клиента")
             return self.form_invalid(form)
 
         form.instance.client = client
@@ -77,7 +77,7 @@ class ProjectCreateView(CreateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["team"] = self.request.user.userprofile.active_team
-        context["title"] = 'Add project'
+        context["title"] = 'Добавить проект'
         return context
 
 class AddFileView(View):

@@ -6,6 +6,13 @@ class AddClientForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ("name", "email", "phone", "description")
+        labels = {
+            'name': 'Имя',
+            'email': 'Электронная почта',
+            'phone': 'Телефон',
+            'description': 'Описание',
+        }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
