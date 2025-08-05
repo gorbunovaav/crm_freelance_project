@@ -1,5 +1,5 @@
 {% load static %}
-<header class="mb-4">
+<header class="mb-1">
     <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
         <a href="/" class="img_logo" class="navbar-brand">
             <img class="img_logo" src="{% static 'core/images/logo_black.png'%}" alt="">
@@ -10,51 +10,50 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                    <a class="nav-link" href="{% url 'about' %}">О нас</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Anything</a>
+                    <a class="nav-link" href="#">Что-то ещё</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Company</a>
+                    <a class="nav-link" href="#">Что-то ещё</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto d-flex align-items-center gap-2">
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <span class="navbar-text small">Your team:
+                    <span class="navbar-text small">Ваша команда:
                         <a href="{% url 'team:detail' active_team.id %}" class="text-decoration-none fw-bold">
                             {{ active_team.name }}</a>
                     </span>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                      {{ request.user.username }}
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ request.user.username }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                      <li><a class="dropdown-item" href="{% url 'userprofile:myaccount' %}">My account</a></li>
-                      <li><a class="dropdown-item" href="{% url 'projects:list' %}">My projects</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                      <li><a class="dropdown-item" href="{% url 'leads:list' %}">Leads</a></li>
-                      <li><a class="dropdown-item" href="{% url 'clients:list' %}">Clients</a></li>
+                        <li><a class="dropdown-item" href="{% url 'userprofile:myaccount' %}">Мой профиль</a></li>
+                        <li><a class="dropdown-item" href="{% url 'projects:list' %}">Мои проекты</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'dashboard:index' %}">Дашборд</a></li>
+                        <li><a class="dropdown-item" href="{% url 'leads:list' %}">Лиды</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clients:list' %}">Клиенты</a></li>
                     </ul>
-                  </li>
-      
+                    </li>
                 <li class="nav-item">
                     <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
                         {% csrf_token %}
                     </form>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                        class="btn btn-danger btn-sm">Log out</a>
+                        class="btn btn-danger btn-sm">Выход</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a href="{% url 'login' %}" class="btn btn-outline-success btn-sm">Log in</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-success btn-sm">Вход</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'userprofile:signup' %}" class="btn btn-success btn-sm">Sign up</a>
+                    <a href="{% url 'userprofile:signup' %}" class="btn btn-success btn-sm">Регистрация</a>
                 </li>
                 {% endif %}
             </ul>

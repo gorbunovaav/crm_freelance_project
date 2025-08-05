@@ -3,9 +3,6 @@ from django import forms
 from .models import Project, ProjectFile
 
 class AddProjectForm(forms.ModelForm):
-    # start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    # end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-
     class Meta:
         model = Project
         fields = ("name", "description", "budget", "status", 'team', 'start_date', 'end_date')

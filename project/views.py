@@ -25,6 +25,7 @@ class ProjectDetailView(DetailView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = AddProjectForm
+        context["fileform"] = AddProjectForm()
     
         return context
 
@@ -45,7 +46,7 @@ class ProjectDeleteView(DeleteView, LoginRequiredMixin):
 
 class ProjectUpdateView(UpdateView, LoginRequiredMixin):
     model = Project
-    fields = ('name', 'description', 'budget', 'status', 'start_date', 'end_date')
+    form_class = AddProjectForm
     success_url = reverse_lazy('projects:list')
     
     def get_context_data(self, **kwargs):
@@ -60,7 +61,6 @@ class ProjectUpdateView(UpdateView, LoginRequiredMixin):
 class ProjectCreateView(CreateView, LoginRequiredMixin):
     model = Project
     form_class = AddProjectForm
-    # fields = ('name', 'description', 'budget', 'status', 'start_date', 'end_date')
     success_url = reverse_lazy('projects:list')
     
     def form_valid(self, form):

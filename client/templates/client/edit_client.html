@@ -1,17 +1,30 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
 
 {% block title %}
-Edit client
+    Отредактировать клиента
 {% endblock %}
 
 {% block content %}
-    <div class="py-6 px-6">
-        <h1 class="text-xl font-semibold">Edit client</h1>
-        <form method="post" action=".">
-            {% csrf_token %}
+<div class="container py-5" style="max-width: 600px;">
+    <h1 class="h4 mb-4">Отредактировать клиента</h1>
 
-            {{form.as_p}}
-            <button class="py-2 px-4 bg-teal-500 rounded-xl text-white">Submit</button>
-        </form>
-    </div>
+    <form method="post" action=".">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Внести изменения</button>
+    </form>
+</div>
 {% endblock %}

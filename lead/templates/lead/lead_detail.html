@@ -1,71 +1,110 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
 
 {% block title %}
-{{lead.name}}
+    {{ lead.name }}
 {% endblock %}
 
 {% block content %}
-    <div class="py-6 px-6">
-        <h1 class="mb-4 text-xl font-semibold">{{lead.name}}</h1>
-        <p class="font-semibold">Description</p>
+<div class="container py-5">
+    <h1 class="mb-4">{{ lead.name }}</h1>
+
+    <div class="mb-3">
+        <h5>Описание</h5>
         {% if lead.description %}
-            <p class="mb-2">{{lead.description}}</p>
+            <p>{{ lead.description }}</p>
+        {% else %}
+            <p class="text-muted">Нет описания</p>
         {% endif %}
-        <p class="font-semibold">Status</p>
-        <p class="mb-2">{{lead.get_status_display}}</p>
-
-        <p class="font-semibold">Priority</p>
-        <p class="mb-2">{{lead.get_priority_display}}</p>
-
-        <p class="font-semibold">Created at</p>
-        <p class="mb-2">{{lead.created_at|date:"M-d-Y H:i"}}</p>
-
-        <p class="font-semibold">Modified at</p>
-        <p class="mb-2">{{lead.modified_at|date:"M-d-Y H:i"}}</p>
-        <div class="flex mb-3">
-            <a href="{% url 'leads:convert' lead.id %}" class="text-sm/6 font-semibold bg-blue-600 py-1 px-2 rounded-xl text-white">Convert to client</a>
-            <form id="lead_delete_form" method="post "action="{% url 'leads:delete' lead.id %}">
-                {% csrf_token %}
-            </form>
-            <a href="#" onclick="document.getElementById('lead_delete_form').submit();" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete </a>
-
-            <!-- <a href="{% url 'leads:delete' lead.id %}" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete</a> -->
-            <a href="{% url 'leads:edit' lead.id %}" class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
-        </div>
-        <a href="{% url 'leads:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to leads</a>
-        <a href="{% url 'dashboard:index' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to dashboard</a>
-        <h2 class="text-xl">Comments</h2>
-        <div class="space-y-4">
-            {% for comment in lead.comments.all %}
-            <div class="bg-gray-100 py-6">
-                <p><strong> {{ comment.created_by}} </strong> {{ comment.created_at}} </p>
-                <p>{{ comment.content}}</p>
-            </div>
-            {% endfor %}
-
-        </div>
-        <h2 class="text-xl">Add comment</h2>
-        <form method="post" action="{% url 'leads:add_comment' lead.id %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>
-        </form>
-        <h2 class="text-xl">Files</h2>
-        <div class="space-y-4">
-            {% for file in lead.files.all %}
-            <div class="bg-gray-100 py-6">
-                <p><strong> {{ file.created_by}} </strong> {{ file.created_at}} </p>
-                <a href="{{ file.file.url }}">Download</a>
-            </div>
-            {% endfor %}
-
-        </div>
-
-        <h2 class="text-xl">Add file</h2>
-        <form method="post" action="{% url 'leads:add_file' lead.id %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ fileform.as_p }}
-            <button class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>
-        </form>
     </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <h6>Статус</h6>
+            <p>{{ lead.get_status_display }}</p>
+        </div>
+        <div class="col-md-6">
+            <h6>Приоритет</h6>
+            <p>{{ lead.get_priority_display }}</p>
+        </div>
+    </div>
+
+    <div class="row mb-4 text-muted">
+        <div class="col-md-6">
+            <p><strong>Создано: </strong> {{ lead.created_at|date:"M d, Y H:i" }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Изменено: </strong> {{ lead.modified_at|date:"M d, Y H:i" }}</p>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <a href="{% url 'leads:convert' lead.id %}" class="btn btn-primary btn-sm">Преобразовать в клиента</a>
+
+        <form id="lead_delete_form" method="post" action="{% url 'leads:delete' lead.id %}" class="d-inline">
+            {% csrf_token %}
+        </form>
+        <button class="btn btn-danger btn-sm" onclick="if(confirm('Are you sure you want to delete this lead?')) document.getElementById('lead_delete_form').submit();">
+            Удалить
+        </button>
+
+        <a href="{% url 'leads:edit' lead.id %}" class="btn btn-outline-secondary btn-sm">Редактировать</a>
+    </div>
+
+    <div class="mb-5">
+        <a href="{% url 'leads:list' %}" class="btn btn-info btn-sm me-2">Обратно к лидам</a>
+        <a href="{% url 'dashboard:index' %}" class="btn btn-info btn-sm">Обратно к дэшборду</a>
+    </div>
+
+    <hr>
+
+    <h4 class="mt-5 mb-3">Комментарии</h4>
+    {% if lead.comments.all %}
+        <div class="list-group mb-4">
+            {% for comment in lead.comments.all %}
+                <div class="list-group-item">
+                    <small class="text-muted">
+                        <strong>{{ comment.created_by }}</strong> &middot; {{ comment.created_at|date:"M d, Y H:i" }}
+                    </small>
+                    <p class="mb-0 mt-1">{{ comment.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Нет комментариев</p>
+    {% endif %}
+
+    <h5>Добавить комментарий</h5>
+    <form method="post" action="{% url 'leads:add_comment' lead.id %}" class="mb-5">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success btn-sm">Отправить</button>
+    </form>
+
+    <hr>
+
+    <h4 class="mt-5 mb-3">Файлы</h4>
+    {% if lead.files.all %}
+        <div class="list-group mb-4">
+            {% for file in lead.files.all %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-muted">
+                            <strong>{{ file.created_by }}</strong> &middot; {{ file.created_at|date:"M d, Y H:i" }}
+                        </small>
+                    </div>
+                    <a href="{{ file.file.url }}" class="btn btn-outline-primary btn-sm" download>Download</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Нет файлов</p>
+    {% endif %}
+
+    <h5>Отправить файл</h5>
+    <form method="post" action="{% url 'leads:add_file' lead.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ fileform.as_p }}
+        <button type="submit" class="btn btn-success btn-sm">Прикрепить файл</button>
+    </form>
+</div>
 {% endblock %}

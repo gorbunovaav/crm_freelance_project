@@ -1,27 +1,46 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
 
 {% block title %}
-My account
+Мой профиль
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-xl font-semibold">My account</h1>
-    <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
-        {% csrf_token %}
-    </form>
-    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-sm/6 font-semibold bg-red-600 py-2 px-3 mt-5 rounded-xl text-white">Log out </a>
-    <p class="mt-2">
-        <strong>Username</strong>: {{request.user.username}}
-    </p>
-    <p class="mt-2 flex items-center">
-        {% if active_team %}
-            <strong>Team:</strong> <a href="{% url 'team:detail' active_team.id %}"> {{active_team.name}}</a>
-            {% if active_team.created_by == request.user%}
-                <a class="ml-2 text-sm font-semibold bg-teal-600 py-2 px-2 rounded-xl text-white" href="{% url 'team:edit' active_team.id%}">Edit</a>
-            {% endif %}
-        {% else %}
-            <a href="{% url 'team:list' %}">Select team</a>
-        {% endif %}
-        </p>
+<div class="container my-5" style="max-width: 600px;">
+    <h1 class="mb-4 text-primary">Мой профиль</h1>
 
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p class="mb-3"><strong>Имя пользователя:</strong> {{ request.user.username }}</p>
+
+            <p class="mb-3 d-flex align-items-center">
+                {% if active_team %}
+                    <strong>Команда:</strong> 
+                    <a href="{% url 'team:detail' active_team.id %}" class="ms-2 text-decoration-none">
+                        {{ active_team.name }}
+                    </a>
+
+                    {% if active_team.created_by == request.user %}
+                        <a href="{% url 'team:edit' active_team.id %}" class="btn btn-sm btn-success ms-3">
+                            Редактировать
+                        </a>
+                        <a href="{% url 'team:list' %}" class="btn btn-info btn-sm ms-3">
+                            Сменить команду
+
+                        </a>
+
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'team:list' %}" class="btn btn-outline-primary btn-sm">
+                        Выбрать команду
+                    </a>
+                {% endif %}
+            </p>
+
+            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger mt-4 w-100">Выйти из аккаунта</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

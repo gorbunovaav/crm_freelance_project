@@ -6,6 +6,11 @@ class AddClientForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ("name", "email", "phone", "description")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control form-control-sm"
+
 
 class AddCommentForm(forms.ModelForm):
     class Meta:

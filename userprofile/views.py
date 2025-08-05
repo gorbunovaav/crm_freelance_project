@@ -10,12 +10,13 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
-            Team.objects.create(name='The team name', created_by=user)
+            team = Team.objects.create(name='The team name', created_by=user, plan = 'Basic')
             team.members.add(user)
             team.save()
             Userprofile.objects.create(user=user, active_team=team)
             return redirect('/log-in/')
-    form = SignupForm()
+    else:
+        form = SignupForm()
     return render(request, 'userprofile/signup.html',{
         'form': form 
     })

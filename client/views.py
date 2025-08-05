@@ -24,15 +24,15 @@ def clients_export(request):
 
 @login_required
 def add_client(request):
+    team = request.user.userprofile.active_team
     if request.method == 'POST':
         form = AddClientForm(request.POST)
         if form.is_valid():
             client = form.save(commit=False)
-            team = request.user.userprofile.active_team
             client.created_by = request.user
             client.team = team
             client.save()
-            messages.info(request, "The client was created")
+            messages.info(request, "Клиент создан")
             return redirect('clients:list')
     else:
         form = AddClientForm()
@@ -87,7 +87,7 @@ def client_detail(request, pk):
 def delete_client(request, pk):
     client = get_object_or_404(Client, created_by=request.user, pk=pk)
     client.delete()
-    messages.info(request, "The client was deleted")
+    messages.info(request, "Клиент удалён")
     return redirect('clients:list')
 
 @login_required
@@ -97,7 +97,7 @@ def edit_client(request, pk):
         form = AddClientForm(request.POST, instance=client)
         if form.is_valid():
             form.save()
-            messages.info(request, "The changes were saved")
+            messages.info(request, "Изменения сохранены")
             return redirect('clients:list')
     else:
         form = AddClientForm(instance=client)

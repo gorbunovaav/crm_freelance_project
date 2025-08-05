@@ -1,9 +1,40 @@
 {%extends 'core/base.html'%}
 
 {% block title %}
-About
+О нас
 {% endblock %}
 
 {% block content %}
-This is about page
+{% load static %}
+<main class="flex-grow-1 py-5 bg-light">
+    <div class="container">
+
+        <section class="mb-5">
+            <h2>Наша миссия</h2>
+            <p>Мы создаём удобный инструмент для фрилансеров и небольших команд, чтобы упростить управление проектами и сосредоточиться на работе, а не на рутине.</p>
+        </section>
+
+        <section class="mb-5">
+            <h2>Как всё начиналось</h2>
+            <p>Freelance CRM появился как внутренний инструмент двух фрилансеров, которым надоело теряться в Excel и Telegram. Мы хотели удобный, понятный, не перегруженный сервис — и создали его.</p>
+        </section>
+
+        <section class="mb-5">
+            <h2>Наши ценности</h2>
+            <ul>
+                <li>Простота — меньше кнопок, больше дела</li>
+                <li>Конфиденциальность — ваши данные только ваши</li>
+                <li>Поддержка — мы рядом, если что-то пойдет не так</li>
+            </ul>
+        </section>
+
+
+        <section class="mb-5 text-center">
+            <h2>Контакты</h2>
+            <p>Связаться с нами: <a href="mailto:hello@freelancecrm.ru">hello@freelancecrm.ru</a></p>
+        </section>
+
+    </div>
+</main>
+
 {% endblock %}

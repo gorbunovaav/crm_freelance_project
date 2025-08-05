@@ -1,14 +1,37 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %}
-Sign up
+    Регистрация
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-xl font-semibold">Sign up</h1>
-    <form method="post" action=".">
-        {% csrf_token %} 
-        {{form.as_p}}
-        <button class="py-2 px-4 bg-teal-500 rounded-xl text-white">Submit</button>
-    </form>
+<div class="container d-flex align-items-center justify-content-center min-vh-80">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 text-primary">Регистрация</h2>
+            <form method="post" action=".">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field}}
+                        {% if field.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ field.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <a class="text-white text-decoration-none" href="{% url 'userprofile:signup' %}">Зарегистрироваться</a>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

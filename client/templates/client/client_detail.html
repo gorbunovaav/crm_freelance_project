@@ -1,68 +1,91 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
 
 {% block title %}
-{{client.name}}
+    {{ client.name }}
 {% endblock %}
 
 {% block content %}
-<div class="py-6 px-6">
-    <h1 class="mb-4 text-xl font-semibold">{{client.name}}</h1>
-    <p class="font-semibold">Description</p>
-    {% if client.description %}
-    <p class="mb-2">{{client.description}}</p>
+<div class="container py-4">
+    <h1 class="mb-4 h4">{{ client.name }}</h1>
+
+    <div class="mb-3">
+        <h6>Описание</h6>
+        {% if client.description %}
+            <p>{{ client.description }}</p>
+        {% else %}
+            <p class="text-muted">Нет описания</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-3 text-muted">
+        <p><strong>Создано:</strong> {{ client.created_at|date:"M d, Y H:i" }}</p>
+        <p><strong>Изменено:</strong> {{ client.modified_at|date:"M d, Y H:i" }}</p>
+    </div>
+
+    <div class="mb-4">
+        <a href="{% url 'clients:edit' client.id %}" class="btn btn-outline-dark btn-sm">Редактировать</a>
+        <a href="{% url 'clients:delete' client.id %}" class="btn btn-danger btn-sm">Удалить</a>
+    </div>
+
+    <div class="mb-4">
+        <a href="{% url 'clients:list' %}" class="btn btn-primary btn-sm">Назад к клиентам</a>
+        <a href="{% url 'dashboard:index' %}" class="btn btn-primary btn-sm">Назад к дэшборду</a>
+    </div>
+
+    <hr class="my-4">
+
+    <h5 class="mb-3">Комментарии</h5>
+    {% if client.comments.all %}
+        <div class="mb-4">
+            {% for comment in client.comments.all %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <small class="text-muted">
+                            <strong>{{ comment.created_by }}</strong> · {{ comment.created_at|date:"M d, Y H:i" }}
+                        </small>
+                        <p class="mb-0 mt-2">{{ comment.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Нет комментариев</p>
     {% endif %}
 
-    <p class="font-semibold">Created at</p>
-    <p class="mb-2">{{client.created_at|date:"M-d-Y H:i"}}</p>
-
-    <p class="font-semibold">Modified at</p>
-    <p class="mb-2">{{client.modified_at|date:"M-d-Y H:i"}}</p>
-    <div class="flex mb-3">
-        <a href="{% url 'clients:delete' client.id %}"
-            class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete</a>
-        <a href="{% url 'clients:edit' client.id %}"
-            class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
-    </div>
-    <a href="{% url 'clients:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back
-        to clients</a>
-    <a href="{% url 'dashboard:index' %}"
-        class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to dashboard</a>
-
-    <h2 class="text-xl">Comments</h2>
-    <div class="space-y-4">
-        {% for comment in client.comments.all %}
-        <div class="bg-gray-100 py-6">
-            <p><strong> {{ comment.created_by}} </strong> {{ comment.created_at}} </p>
-            <p>{{ comment.content}}</p>
-        </div>
-        {% endfor %}
-
-    </div>
-    <h2 class="text-xl">Add comment</h2>
-    <form method="post" action="{% url 'clients:add_comment' client.id %}">
+    <h6 class="mb-2">Добавить комментарий</h6>
+    <form method="post" action="{% url 'clients:add_comment' client.id %}" class="mb-5">
         {% csrf_token %}
         {{ form.as_p }}
-        <button
-            class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>
+        <button type="submit" class="btn btn-dark btn-sm">Отправить</button>
     </form>
 
-    <h2 class="text-xl">Files</h2>
-    <div class="space-y-4">
-        {% for file in client.files.all %}
-        <div class="bg-gray-100 py-6">
-            <p><strong> {{ file.created_by}} </strong> {{ file.created_at}} </p>
-            <a href="{{ file.file.url }}">Download</a>
+    <hr class="my-4">
+
+    <h5 class="mb-3">Файлы</h5>
+    {% if client.files.all %}
+        <div class="mb-4">
+            {% for file in client.files.all %}
+                <div class="card mb-3">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted">
+                                <strong>{{ file.created_by }}</strong> · {{ file.created_at|date:"M d, Y H:i" }}
+                            </small>
+                        </div>
+                        <a href="{{ file.file.url }}" class="btn btn-link btn-sm" download>Скачать</a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+    {% else %}
+        <p class="text-muted">Нет прикреплённых файлов</p>
+    {% endif %}
 
-    </div>
-
-    <h2 class="text-xl">Add file</h2>
+    <h6 class="mb-2">Прикрепить файл</h6>
     <form method="post" action="{% url 'clients:add_file' client.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ fileform.as_p }}
-        <button
-            class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>
+        <button type="submit" class="btn btn-dark btn-sm">Отправить</button>
     </form>
 </div>
 {% endblock %}

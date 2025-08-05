@@ -1,60 +1,76 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
 
 {% block title %}
-{{project.name}}
+{{ project.name }}
 {% endblock %}
 
 {% block content %}
-    <div class="py-6 px-6">
-        <h1 class="mb-4 text-xl font-semibold">{{project.name}}</h1>
-        <p class="font-semibold">Description</p>
-        {% if project.description %}
-            <p class="mb-2">{{project.description}}</p>
-        {% endif %}
-        <p class="font-semibold">Status</p>
-        <p class="mb-2">{{project.get_status_display}}</p>
+<div class="container py-5" style="max-width: 700px;">
+    <h1 class="mb-4">{{ project.name }}</h1>
 
-        <p class="font-semibold">Client</p>
-        <p class="mb-2">{{project.client}}</p>
+    <p class="fw-semibold">Описание</p>
+    {% if project.description %}
+        <p class="mb-3">{{ project.description }}</p>
+    {% else %}
+        <p class="text-muted mb-3">Нет описания</p>
+    {% endif %}
 
-        <p class="font-semibold">Team</p>
-        <p class="mb-2">{{project.team}}</p>
+    <p class="fw-semibold">Статус</p>
+    <p class="mb-3">{{ project.get_status_display }}</p>
 
+    <p class="fw-semibold">Клиент</p>
+    <p class="mb-3">{{ project.client }}</p>
 
-        <p class="font-semibold">Start date</p>
-        <p class="mb-2">{{project.start_date|date:"M-d-Y"}}</p>
+    <p class="fw-semibold">Команда</p>
+    <p class="mb-3">{{ project.team }}</p>
 
-        <p class="font-semibold">End date</p>
-        <p class="mb-2">{{project.end_date|date:"M-d-Y"}}</p>
+    <p class="fw-semibold">Начало проекта</p>
+    <p class="mb-3">{{ project.start_date|date:"M-d-Y" }}</p>
 
-        <p class="font-semibold">Budget</p>
-        <p class="mb-2">{{project.budget}}</p>
+    <p class="fw-semibold">Дедлайн проекта</p>
+    <p class="mb-3">{{ project.end_date|date:"M-d-Y" }}</p>
 
-        <div class="flex mb-3">
-            <form id="project_delete_form" method="post "action="{% url 'projects:delete' project.id %}">
-                {% csrf_token %}
-            </form>
-            <a href="#" onclick="document.getElementById('project_delete_form').submit();" class="text-sm/6 font-semibold bg-red-600 py-1 px-2 rounded-xl text-white ml-2">Delete </a>
+    <p class="fw-semibold">Бюджет</p>
+    <p class="mb-4">{{ project.budget }}</p>
 
-            <a href="{% url 'projects:edit' project.id %}" class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Edit</a>
-        </div>
-        <a href="{% url 'projects:list' %}" class="text-sm/6 font-semibold bg-teal-600 py-2 px-3 rounded-xl text-white">Back to projects</a>
-        <h2 class="text-xl">Files</h2>
-        <div class="space-y-4">
-            {% for file in project.files.all %}
-            <div class="bg-gray-100 py-6">
-                <p><strong> {{ file.created_by}} </strong> {{ file.created_at}} </p>
-                <a href="{{ file.file.url }}">Download</a>
-            </div>
-            {% endfor %}
-
-        </div>
-
-        <h2 class="text-xl">Add file</h2>
-        <form method="post" action="{% url 'projects:add_file' project.id %}" enctype="multipart/form-data">
+    <div class="mb-4 d-flex gap-2">
+        <form id="project_delete_form" method="post" action="{% url 'projects:delete' project.id %}">
             {% csrf_token %}
-            {{ fileform.as_p }}
-            <button class="text-sm/6 font-semibold bg-white-600 py-1 px-2 rounded-xl border-1 ml-2 border-black">Submit</button>
+            <button type="submit" class="btn btn-danger">Удалить</button>
         </form>
+        <a href="{% url 'projects:edit' project.id %}" class="btn btn-outline-secondary">Edit</a>
     </div>
+
+    <a href="{% url 'projects:list' %}" class="btn btn-primary mb-4">Обратно к проектам</a>
+
+    <h2 class="mb-3">Файлы</h2>
+    <div class="list-group mb-4">
+        {% for file in project.files.all %}
+            <div class="list-group-item">
+                <div><strong>{{ file.created_by }}</strong> — {{ file.created_at|date:"M-d-Y H:i" }}</div>
+                <a href="{{ file.file.url }}" class="btn btn-link p-0">Загрузить файл</a>
+            </div>
+        {% empty %}
+            <p class="text-muted">Нет файлов</p>
+        {% endfor %}
+    </div>
+
+    <h2 class="mb-3">Добавить файл</h2>
+    <form method="post" action="{% url 'projects:add_file' project.id %}" enctype="multipart/form-data" class="mb-5">
+        {% csrf_token %}
+        {% for field in fileform %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
 {% endblock %}

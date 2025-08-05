@@ -1,24 +1,36 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
 
 {% block title %}
-{{ title }}
+    {{ title }}
 {% endblock %}
 
 {% block content %}
-<div class="py-6 px-6">
-    <h1 class="text-xl font-semibold">{{ title }}</h1>
+<div class="container py-5" style="max-width: 600px;">
+    <h1 class="h4 mb-4">{{ title }}</h1>
+
     {% if team.plan.max_leads > team.leads.count or title == 'Edit lead' %}
-    <form method="post" action=".">
-        {% csrf_token %}
+        <form method="post" action=".">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
 
-        {{form.as_p}}
-        <button class="py-2 px-4 bg-teal-500 rounded-xl text-white">Submit</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
     {% else %}
-    <div class="px-6 py-4 bg-red-400 text-white">
-        <p>Your team has reached maximum number of leads! Your owner must upgrade your plan!</p>
-    </div>
+        <div class="alert alert-danger" role="alert">
+            Ваша команда достигла максимального количества клиентов! Создателю команды необходимо обновить ваш тарифный план!        
+        </div>
     {% endif %}
-
 </div>
 {% endblock %}

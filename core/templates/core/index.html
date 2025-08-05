@@ -5,5 +5,98 @@ Freelance CRM
 {% endblock %}
 
 {% block content %}
-The front page
+{% load static %}
+
+<section class="py-5 bg-light text-center">
+    <div class="container">
+        <h2 class="mb-4">Почему Freelance CRM?</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Все в одном</h5>
+                        <p class="card-text">Клиенты, задачи и сделки в одном интерфейсе</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Контроль сроков</h5>
+                        <p class="card-text">Уведомления и дедлайны под контролем</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Простота</h5>
+                        <p class="card-text">Интерфейс без лишнего — только важное</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Командная работа</h5>
+                        <p class="card-text">Добавляйте участников и делите ответственность</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Демо -->
+<section class="py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Простой интерфейс — максимум пользы</h2>
+        <!-- <img src="{% static 'core/images/demo.png' %}" alt="Demo screenshot" class="img-fluid rounded shadow"> -->
+    </div>
+</section>
+
+<!-- Целевая аудитория -->
+<section class="bg-light py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Кому подойдёт?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">Фрилансерам</h5>
+                        <p class="card-text">Организуй все заказы и клиентов в одном месте</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">Малому бизнесу</h5>
+                        <p class="card-text">Упрощайте работу с лидами и делегируйте задачи</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">ИТ-специалистам</h5>
+                        <p class="card-text">Проекты под контролем: сроки, роли, заметки</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if not request.user.is_authenticated %}
+{
+    <section class="py-5 text-center bg-primary text-white">
+        <div class="container">
+            <h2 class="mb-4">Готовы начать?</h2>
+            <a href="{% url 'userprofile:signup' %}" class="btn btn-light btn-lg">Создать аккаунт</a>
+        </div>
+    </section>
+}
+{% endif%}
+
 {% endblock %}
