@@ -89,14 +89,14 @@ Freelance CRM
 </section>
 
 {% if not request.user.is_authenticated %}
-{
+
     <section class="py-5 text-center bg-primary text-white">
         <div class="container">
             <h2 class="mb-4">Готовы начать?</h2>
             <a href="{% url 'userprofile:signup' %}" class="btn btn-light btn-lg">Создать аккаунт</a>
         </div>
     </section>
-}
+
 {% endif%}
 
 {% endblock %}

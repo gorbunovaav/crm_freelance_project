@@ -44,33 +44,28 @@
     <a href="{% url 'projects:list' %}" class="btn btn-primary mb-4">Обратно к проектам</a>
 
     <h2 class="mb-3">Файлы</h2>
-    <div class="list-group mb-4">
-        {% for file in project.files.all %}
-            <div class="list-group-item">
-                <div><strong>{{ file.created_by }}</strong> — {{ file.created_at|date:"M-d-Y H:i" }}</div>
-                <a href="{{ file.file.url }}" class="btn btn-link p-0">Загрузить файл</a>
-            </div>
-        {% empty %}
-            <p class="text-muted">Нет файлов</p>
-        {% endfor %}
-    </div>
+    {% if project.files.all %}
+        <div class="list-group mb-4">
+            {% for file in project.files.all %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-muted">
+                            <strong>{{ file.created_by }}</strong> &middot; {{ file.created_at|date:"M d, Y H:i" }}
+                        </small>
+                    </div>
+                    <a href="{{ file.file.url }}" class="btn btn-outline-primary btn-sm" download>Download</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Нет файлов</p>
+    {% endif %}
 
-    <h2 class="mb-3">Добавить файл</h2>
-    <form method="post" action="{% url 'projects:add_file' project.id %}" enctype="multipart/form-data" class="mb-5">
+    <h5>Отправить файл</h5>
+    <form method="post" action="{% url 'projects:add_file' project.id %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {% for field in fileform %}
-            <div class="mb-3">
-                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                    <div class="form-text">{{ field.help_text }}</div>
-                {% endif %}
-                {% if field.errors %}
-                    <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        {{ fileform.as_p }}
+        <button type="submit" class="btn btn-success btn-sm">Прикрепить файл</button>
     </form>
 </div>
 {% endblock %}

@@ -25,7 +25,7 @@ class ProjectDetailView(DetailView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = AddProjectForm
-        context["fileform"] = AddProjectForm()
+        context["fileform"] = AddFileForm()
     
         return context
 
@@ -83,9 +83,9 @@ class ProjectCreateView(CreateView, LoginRequiredMixin):
 class AddFileView(View):
     def post(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
-        form = AddFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = form.save(commit=False)
+        fileform = AddFileForm(request.POST, request.FILES)
+        if fileform.is_valid():
+            file = fileform.save(commit=False)
             file.team = self.request.user.userprofile.active_team
             file.created_by = request.user
             file.project_id = pk
