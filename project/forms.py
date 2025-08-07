@@ -19,12 +19,12 @@ class AddProjectForm(forms.ModelForm):
             'start_date': 'Старт проекта',
             'end_date': 'Дедлайн проекта',
         }
-        
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in ['start_date', 'end_date']:
             self.fields[field].input_formats = ['%Y-%m-%d']
-            self.field.widget.attrs["class"] = "form-control form-control-sm"
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control form-control-sm"
             
 class AddFileForm(forms.ModelForm):
     class Meta:
