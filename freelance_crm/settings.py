@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'client',
     'team',
     'project',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
