@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import View
 from .models import Lead
-from .forms import AddCommentForm, AddFileForm
+from .forms import AddCommentForm, AddFileForm, AddLeadForm
 from client.models import Client, Comment as ClientComment
 from team.models import Team
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
@@ -50,7 +50,8 @@ class LeadUpdateView(UpdateView, LoginRequiredMixin):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Edit lead'
+        context["title"] = 'Редактировать лида'
+        context["form"] = AddLeadForm()
         return context
     
     def get_queryset(self):
@@ -65,7 +66,8 @@ class LeadCreateView(CreateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["team"] = self.request.user.userprofile.active_team
-        context["title"] = 'Add lead'
+        context["title"] = 'Добавить лида'
+        context["form"] = AddLeadForm()
         return context
     
     def form_valid(self, form):

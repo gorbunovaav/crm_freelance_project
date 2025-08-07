@@ -8,7 +8,7 @@
 <div class="container py-5" style="max-width: 600px;">
     <h1 class="h4 mb-4">{{ title }}</h1>
 
-    {% if team.plan.max_leads > team.leads.count or title == 'Edit lead' %}
+    {% if team.plan.max_leads > team.leads.count or title == 'Редактировать лида' %}
         <form method="post" action=".">
             {% csrf_token %}
             
